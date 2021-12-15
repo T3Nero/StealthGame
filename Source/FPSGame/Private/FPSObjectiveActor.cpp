@@ -47,7 +47,7 @@ void AFPSObjectiveActor::NotifyActorBeginOverlap(AActor* OtherActor)
 	AFPSCharacter* Player = Cast<AFPSCharacter>(OtherActor);
 	if(Player)
 	{
-		Player->IsCarryingObjective = true;
+		Player->bIsCarryingObjective = true;
 		Destroy();
 	}
 }

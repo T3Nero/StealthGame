@@ -4,6 +4,7 @@
 #include "FPSHUD.h"
 #include "FPSCharacter.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Kismet/GameplayStatics.h"
 
 AFPSGameMode::AFPSGameMode()
 {
@@ -13,4 +14,34 @@ AFPSGameMode::AFPSGameMode()
 
 	// use our custom HUD class
 	HUDClass = AFPSHUD::StaticClass();
+}
+
+void AFPSGameMode::CompletedMission(APawn* InstigatorPawn)
+{
+	if(InstigatorPawn)
+	{
+		InstigatorPawn->DisableInput(nullptr);
+		// Changes viewtarget to a spectating actor viewpoint once mission completed (set spectating actor class in Blueprints)
+		if(SpectatingViewpointClass)
+		{
+			APlayerController* PC = Cast<APlayerController>(InstigatorPawn->GetController());
+			if(PC)
+			{
+				TArray<AActor*> SpectatingActors;
+				UGameplayStatics::GetAllActorsOfClass(this, SpectatingViewpointClass, SpectatingActors);
+				if(SpectatingActors.Num() > 0)
+				{
+					AActor* SpectatingActor = SpectatingActors[0];
+					PC->SetViewTargetWithBlend(SpectatingActor, 0.7f, EViewTargetBlendFunction::VTBlend_Cubic);
+				}
+			}
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("SpectatingViewpointClass not set in FPSGameMode"));
+		}
+	}
+
+	OnMissionCompleted(InstigatorPawn);
+
 }

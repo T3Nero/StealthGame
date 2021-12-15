@@ -49,7 +49,7 @@ public:
 	UAnimSequence* FireAnimation;
 
 	UPROPERTY(BlueprintReadOnly)
-	bool IsCarryingObjective;
+	bool bIsCarryingObjective;
 
 protected:
 	
