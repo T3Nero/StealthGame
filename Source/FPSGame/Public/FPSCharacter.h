@@ -32,6 +32,7 @@ protected:
 	/** First person camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	UCameraComponent* CameraComponent;
+	
 
 public:
 	AFPSCharacter();
@@ -63,6 +64,9 @@ protected:
 	void MoveRight(float Val);
 
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
+
+	UPROPERTY(VisibleAnywhere)
+	class UPawnNoiseEmitterComponent* NoiseEmitter;
 
 public:
 	/** Returns Mesh1P subobject **/
