@@ -49,7 +49,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Gameplay")
 	UAnimSequence* FireAnimation;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(Replicated, BlueprintReadOnly)
 	bool bIsCarryingObjective;
 
 protected:
@@ -67,6 +67,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	class UPawnNoiseEmitterComponent* NoiseEmitter;
+
+	// SERVER functions must be setup like this
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerFire();
 
 public:
 	/** Returns Mesh1P subobject **/

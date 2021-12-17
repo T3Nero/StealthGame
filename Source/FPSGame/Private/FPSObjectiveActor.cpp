@@ -12,6 +12,7 @@
 // Sets default values
 AFPSObjectiveActor::AFPSObjectiveActor()
 {
+
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh Comp"));
 	RootComponent = MeshComp;
 	MeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -43,12 +44,15 @@ void AFPSObjectiveActor::NotifyActorBeginOverlap(AActor* OtherActor)
 	Super::NotifyActorBeginOverlap(OtherActor);
 
 	PlayEffects();
-
-	AFPSCharacter* Player = Cast<AFPSCharacter>(OtherActor);
-	if(Player)
+	// ROLE_Authority means it will only run on server
+	if(ROLE_Authority)
 	{
-		Player->bIsCarryingObjective = true;
-		Destroy();
+		AFPSCharacter* Player = Cast<AFPSCharacter>(OtherActor);
+		if(Player)
+		{
+			Player->bIsCarryingObjective = true;
+			Destroy();
+		}
 	}
 }
 

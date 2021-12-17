@@ -46,7 +46,14 @@ protected:
 	UFUNCTION()
 	void ResetRotation();
 
+	// ReplicatedUsing needed to Replicate GuardState Enum so it is called on SERVER & Client (Multiplayer)
+	// EAIState is used for creating Enum Variables
+	UPROPERTY(ReplicatedUsing=OnRep_GuardState)
 	EAIState GuardState;
+
+	// OnRep function needs to be created when using ReplicatedUsing (Multiplayer)
+	UFUNCTION()
+	void OnRep_GuardState();
 
 	void SetGuardState(EAIState NewState);
 

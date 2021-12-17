@@ -6,6 +6,7 @@
 
 AFPSProjectile::AFPSProjectile() 
 {
+
 	// Use a sphere as a simple collision representation
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
 	CollisionComp->InitSphereRadius(5.0f);
@@ -29,6 +30,7 @@ AFPSProjectile::AFPSProjectile()
 
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
+
 }
 
 
@@ -40,7 +42,10 @@ void AFPSProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPr
 		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
 
 	}
-
-	MakeNoise(1.0f, GetInstigator());
-	Destroy();
+	// ROLE_Authority means it will only run on server
+	if(ROLE_Authority)
+	{
+		MakeNoise(1.0f, GetInstigator());
+		Destroy();
+	}
 }
